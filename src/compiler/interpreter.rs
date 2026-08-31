@@ -28,6 +28,6 @@ mod tests {
     #[test]
 
     fn test_interpreter(){
-                assert_eq!(Interpreter::from_source("1 + 2").unwrap(), 3);
+                assert_eq!(Interpreter::from_source("6 - 1").unwrap(), 5);
     }
 }
