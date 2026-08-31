@@ -13,3 +13,5 @@ Operator = { "+" | "-" }
 Int = @{ ASCII_DIGIT+ }
 
 WHITESPACE = _{ " " | "\t" | "\r" | "\n" } 
+
+EOF = _{ EOI | ";" }

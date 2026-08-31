@@ -7,4 +7,4 @@ use crate::ast::{Node, Operator};
 
 #[grammar = "grammar.pest"]
 
-struct CalcParser;
+pub struct CalcParser;
