@@ -8,12 +8,28 @@
 // moves to the next byte does the same shit again
 // lets fucking go
 
+use crate::ast::Node;
+use super::opcode::Bytecode;
+
 const STACK_SIZE: usize = 512;
 
+            let node = self.stack[self.stack_ptr - 1].clone();
+        self.stack_ptr -= 1;
+        node
 pub struct VM {
     bytecode:Bytecode,
-    stack: [Node; STACK_SIZE],
+    stack: Vec<Node>,
     stack_ptr: usize,
+}
+
+impl VM {
+
+
+    pub fn new(bytecode: Bytecode) -> Self {
+    VM {
+        bytecode,
+        stack: Vec::with_capacity(STACK_SIZE),
+    }
 }
 
 pub fn run(&mut self) {
@@ -27,7 +43,7 @@ pub fn run(&mut self) {
         0x01 => {
 
             // - OpConst
-            let const_idx = convert_two_u8s_to_usize_hehehehe(
+            let const_idx = convert_two_u8s_to_usize(
                 self.bytecode.instructions[ip],
                 self.bytecode.instructions[ip + 1],
             );
@@ -83,12 +99,17 @@ pub fn run(&mut self) {
 }
 
 pub fn push(&mut self, node: Node) {
-    self.stack[self.stack_ptr] = node;
-    self.stack_ptr += 1;
+    self.stack.push(node);
+
 }
 
 pub fn pop (&mut self) -> Node {
-            let node = self.stack[self.stack_ptr - 1].clone();
-        self.stack_ptr -= 1;
-        node
+    self.stack.pop().unwrap()
+
+}
+
+pub fn pop_last(&mut self) -> Node {
+    self.pop()
+}
+
 }

@@ -1,3 +1,6 @@
+use crate::ast::Node;
+use crate::compiler::Compile;
+
 pub enum OpCode {
     OpConstant(u16),
     OpPop,

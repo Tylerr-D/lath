@@ -6,14 +6,13 @@ pub struct Eval;
 
 
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Operator {
     Plus,
     Minus,
 }
 
-#[derive(Debug)]
-
+#[derive(Debug, Clone)]
 pub enum Node {
     Int(i32),
     UnaryExpr {
