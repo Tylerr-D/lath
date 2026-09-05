@@ -13,6 +13,10 @@ use super::opcode::Bytecode;
 
 const STACK_SIZE: usize = 512;
 
+fn convert_two_u8s_to_usize(lo: u8, hi: u8) -> usize {
+    ((hi as usize) << 8) | (lo as usize)
+}
+
 pub struct VM {
     bytecode: Bytecode,
     stack: Vec<Node>,

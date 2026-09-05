@@ -4,8 +4,8 @@ mod compiler;
 
 use std::io::{self,Write};
 use compiler::Compile;
-use compiler::interpreter::Interpreter;
 use compiler::vm::VM;
+use compiler::vm::opcode::Interpreter;
 
 fn main() {
 
@@ -31,18 +31,13 @@ fn main() {
         }
 
 
-          match Interpreter::from_source(input) {
-           Ok(byte_code) => {
-            println!("byte code {:?}", byte_code);
+ let byte_code = Interpreter::from_source(input);
+println!("byte code {:?}", byte_code);
 
-            let mut vm = VM::new(byte_code);
+ let mut vm = VM::new(byte_code);
+vm.run();
 
-            vm.run();
-
-            println!("{}",vm.pop_last());
-           }
-           Err(e) => println!("error:{}",e),
-        }
+ println!("{:?}", vm.pop_last());
     }
 
 }

@@ -27,6 +27,7 @@ OpCode::OpMinus => vec![0x0B],
 }
 }
 
+#[derive(Debug)]
 pub struct Bytecode {
     pub instructions: Vec<u8>,
     pub constants: Vec<Node>,
@@ -56,7 +57,6 @@ fn from_ast(ast: Vec<Node>) -> Self::Output {
 for node in ast {
     println!("compliling node {:?}",node);
     interpreter.interpret_node(node);
-     interpreter.add_instruction(OpCode::OpPop);
 }
 
         interpreter.bytecode
