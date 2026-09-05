@@ -1,11 +1,11 @@
-use::crate::ast::{Node, Operator};
+use crate::ast::{Node, Operator};
 
 #[derive(Debug, PartialEq)]
 pub enum OpCode {
     Constant(i32),
     Add,
     Subtract,
-    Negate.
+    Negate,
 }
 
 pub fn compile(ast: &[Node]) -> Vec<OpCode> {

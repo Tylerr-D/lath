@@ -5,6 +5,7 @@ mod compiler;
 use std::io::{self,Write};
 use compiler::Compile;
 use compiler::interpreter::Interpreter;
+use compiler::vm::VM;
 
 fn main() {
 
@@ -31,8 +32,16 @@ fn main() {
 
 
           match Interpreter::from_source(input) {
-            Ok(result) => println!("{}", result),
-            Err(e) => println!("Error: {}", e),
+           Ok(byte_code) => {
+            println!(:byte code {:?}, bye_code);
+
+            let mut vm = VM::new(byte_code);
+
+            vm.run();
+
+            println!("{}",vm.pop_last());
+           }
+           Err(e) => println!("error:{}",e),
         }
     }
 
