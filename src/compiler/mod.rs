@@ -2,7 +2,6 @@ use crate::ast::Node;
 use crate::ast::parse;
 
 pub mod interpreter;
-pub mod bytecode;
 pub mod vm;
 
 

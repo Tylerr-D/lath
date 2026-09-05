@@ -33,7 +33,7 @@ fn main() {
 
           match Interpreter::from_source(input) {
            Ok(byte_code) => {
-            println!(:byte code {:?}, bye_code);
+            println!("byte code {:?}", byte_code);
 
             let mut vm = VM::new(byte_code);
 

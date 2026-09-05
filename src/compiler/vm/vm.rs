@@ -13,11 +13,8 @@ use super::opcode::Bytecode;
 
 const STACK_SIZE: usize = 512;
 
-            let node = self.stack[self.stack_ptr - 1].clone();
-        self.stack_ptr -= 1;
-        node
 pub struct VM {
-    bytecode:Bytecode,
+    bytecode: Bytecode,
     stack: Vec<Node>,
     stack_ptr: usize,
 }
@@ -29,6 +26,7 @@ impl VM {
     VM {
         bytecode,
         stack: Vec::with_capacity(STACK_SIZE),
+        stack_ptr: 0,
     }
 }
 
@@ -100,10 +98,11 @@ pub fn run(&mut self) {
 
 pub fn push(&mut self, node: Node) {
     self.stack.push(node);
-
+    self.stack_ptr += 1;
 }
 
 pub fn pop (&mut self) -> Node {
+    self.stack_ptr -= 1;
     self.stack.pop().unwrap()
 
 }

@@ -8,3 +8,4 @@ use crate::ast::{Node, Operator};
 #[grammar = "grammar.pest"]
 
 pub struct CalcParser;
+
