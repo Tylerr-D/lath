@@ -13,7 +13,9 @@ pub enum Operator {
 
 #[derive(Debug, Clone)]
 pub enum Node {
+
     Int(i32),
+
     UnaryExpr {
         op: Operator,
         child: Box<Node>,
@@ -29,23 +31,35 @@ pub enum Node {
 fn build_ast_from_expr(pair: pest::iterators::Pair<Rule>) -> Node {
     match pair.as_rule() {
         Rule::Expr | Rule::Term => {
+
+
             let inner = pair.into_inner().next().unwrap();
             build_ast_from_expr(inner)
+
+
         }
 
         Rule::Int => {
+            
             let n = pair.as_str().parse::<i32>().unwrap();
             Node::Int(n)
+            
         }
 
         Rule::UnaryExpr => {
-            let mut pairs = pair.into_inner();
-            let op_pair = pairs.next().unwrap();
+
+        let mut pairs = pair.into_inner();
+
+let first = pairs.next().unwrap();
 
             if first.as_rule() == Rule::UnaryOp {
-                let op = match op_pair.as_str() {
+
+                let op = match first.as_str() {
+
                     "+" => Operator::Plus,
                     "-" => Operator::Minus,
+
+
                     _ => unreachable!(),
                 };
 
@@ -66,11 +80,16 @@ fn build_ast_from_expr(pair: pest::iterators::Pair<Rule>) -> Node {
 
             // then keep folding in (operator, term) pairs left to right
             while let Some(op_pair) = pairs.next() {
+
                 let op = match op_pair.as_str() {
+
+
                     "+" => Operator::Plus,
                     "-" => Operator::Minus,
                     "*" => Operator::Multiply,
                     "/" => Operator::Divide,
+
+
                     _ => unreachable!(),
                 };
                 let rhs_pair = pairs.next().unwrap();
@@ -135,8 +154,8 @@ impl Eval {
                     Operator::Minus => lhs_ret - rhs_ret,
                     Operator::Multiply => lhs_ret * rhs_ret,
                     Operator::Divide => lhs_ret / rhs_ret,
-                }
-            }
         }
+                    }
+                        }
     }
 }

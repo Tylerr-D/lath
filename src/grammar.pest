@@ -13,6 +13,10 @@ Term = { Int | "(" ~ Expr ~ ")" }
 
 AddOp = { "+" | "-" }
 
+MulOp = { "*" | "/" }
+
+UnaryOp = { "+" | "-" }
+
 BinaryExpr = { (UnaryExpr | Term) ~ (Operator ~ Term)+ }
 
 Operator = { "+" | "-" }
@@ -22,3 +26,4 @@ Int = @{ ASCII_DIGIT+ }
 WHITESPACE = _{ " " | "\t" | "\r" | "\n" } 
 
 EOF = _{ EOI | ";" }
+
