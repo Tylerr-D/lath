@@ -1,14 +1,13 @@
 mod ast;
-mod parser;
 mod compiler;
+mod parser;
 
-use std::io::{self,Write};
-use compiler::Compile;
-use compiler::vm::VM;
 use compiler::vm::opcode::Interpreter;
+use compiler::vm::VM;
+use compiler::Compile;
+use std::io::{self, Write};
 
 fn main() {
-
     println!("calculate prompts");
 
     loop {
@@ -16,13 +15,11 @@ fn main() {
         io::stdout().flush().unwrap();
 
         let mut input = String::new();
-        io::stdin()
-            .read_line(&mut input)
-            .expect("failed");
+        io::stdin().read_line(&mut input).expect("failed");
 
         let input = input.trim();
 
-        if input.is_empty(){
+        if input.is_empty() {
             continue;
         }
 
@@ -30,14 +27,12 @@ fn main() {
             break;
         }
 
+        let byte_code = Interpreter::from_source(input);
+        println!("byte code {:?}", byte_code);
 
- let byte_code = Interpreter::from_source(input);
-println!("byte code {:?}", byte_code);
+        let mut vm = VM::new(byte_code);
+        vm.run();
 
- let mut vm = VM::new(byte_code);
-vm.run();
-
- println!("{:?}", vm.pop_last());
+        println!("{:?}", vm.pop_last());
     }
-
 }

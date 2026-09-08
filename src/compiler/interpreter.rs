@@ -7,7 +7,6 @@ use crate::parser::Rule;
 use crate::ast::Eval;
 
 impl Compile for Interpreter {
-
     type Output = Result<i32, pest::error::Error<Rule>>;
 
     fn from_ast(ast: Vec<Node>) -> Self::Output {
@@ -18,7 +17,6 @@ impl Compile for Interpreter {
         }
         Ok(ret)
     }
-
 }
 
 #[cfg(test)]
@@ -27,7 +25,7 @@ mod tests {
 
     #[test]
 
-    fn test_interpreter(){
-                assert_eq!(Interpreter::from_source("6 - 1").unwrap(), 5);
+    fn test_interpreter() {
+        assert_eq!(Interpreter::from_source("6 - 1").unwrap(), 5);
     }
 }
