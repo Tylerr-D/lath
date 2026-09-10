@@ -1,7 +1,12 @@
 use crate::parser::{CalcParser, Rule};
 use pest::Parser;
 
-pub struct Eval;
+// hashmap lowk got aura
+use std::collections::HashMap;
+
+pub struct Eval {
+    env: HashMap<String, i32>,
+}
 
 #[derive(Debug, Clone)]
 pub enum Operator {
@@ -14,6 +19,18 @@ pub enum Operator {
 #[derive(Debug, Clone)]
 pub enum Node {
 
+    Ident(String),
+
+    Let {
+        name:String,
+        value:Box<Node>
+    },
+
+    Assign {
+        name: String,
+        value: Box<Node>,
+    },
+
     Int(i32),
 
     UnaryExpr {
@@ -22,14 +39,17 @@ pub enum Node {
     },
 
     BinaryExpr {
+
         op: Operator,
         lhs: Box<Node>,
         rhs: Box<Node>,
+
     },
 }
 
 fn build_ast_from_expr(pair: pest::iterators::Pair<Rule>) -> Node {
-    match pair.as_rule() {
+
+         match pair.as_rule() {
         Rule::Expr | Rule::Term => {
 
 
@@ -37,6 +57,10 @@ fn build_ast_from_expr(pair: pest::iterators::Pair<Rule>) -> Node {
             build_ast_from_expr(inner)
 
 
+        }
+
+        Rule::Ident => {
+            Node::Ident(pair.as_str().to_string())
         }
 
         Rule::Int => {
@@ -114,12 +138,40 @@ pub fn parse(source: &str) -> std::result::Result<Vec<Node>, pest::error::Error<
 
     // it checks each and makes coverts it into ast
     for pair in pairs {
-        if let Rule::Expr = pair.as_rule() {
-            ast.push(build_ast_from_expr(pair));
+
+        if pair.as_rule() == Rule::Smt {
+            let inner = pair.into_inner().next().unwrap();
+
+            match inner.as_rule(){
+                Rule::Let => astpush(build_binding(inner, true)),
+                Rule::Assign => ast.push(build_binding(inner, false)),
+                Rule::Expr => ast.push(build_ast_from_expr(inner)),
+
+                _ => {}
+            }
         }
+
     }
-    //
+    
     Ok(ast)
+}
+
+fn build_binding(pair: pest::iterators::Pair<Rule>, is_let: bool()) -> Node {
+
+
+    // gonna change let later, maybe 
+    let mut inner = pair.into_inner().filter(|p| p.as_rule() != Rule::LetKw);
+
+    let name = inner.next().unwrap().as_str().to_string();
+    let value = build_ast_from_expr(inner.next().unwrap());
+
+    if is_let {
+        Node::Let (name, value: Box::new(value))
+    }
+
+    else {
+        Node::Assign { name, value: Box::new(value) }
+    }
 }
 
 impl Eval {
@@ -156,6 +208,21 @@ impl Eval {
                     Operator::Divide => lhs_ret / rhs_ret,
         }
                     }
+
+                    Node::Ident(name) => {
+                *self.env.get(name)
+                    .unwrap_or_else(|| panic!("undefined variable: {}", name))
+            }
+
+
+
+            Node::Let { name, value } | Node::Assign { name, value } => {
+                let v = self.eval(value);
+                self.env.insert(name.clone(), v);
+                v
+            }
+
+            
                         }
     }
 }

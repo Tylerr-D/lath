@@ -1,4 +1,16 @@
-Program = _{ SOI ~ Expr ~ EOF }
+Program = _{ SOI ~ Stmt* ~ EOF }
+
+Stmt = { Let | Assign | Expr }
+
+Let = { LetKw ~ Ident ~ "=" ~ Expr }
+
+LetKw = @{ "let" ~ !IdentChar }
+
+IdentChar = _{ ASCII_ALPHANUMERIC | "_" }
+
+Ident = @{ (ASCII_ALPHA | "_") ~ IdentChar* }
+
+Assign = { Ident ~ "=" ~ Expr }
 
 Expr = { AddSub }
 
@@ -6,10 +18,9 @@ AddSub = { MulDiv ~ (AddOp ~ MulDiv)* }
 
 MulDiv = { UnaryExpr ~ (MulOp ~ UnaryExpr)* }
 
-
 UnaryExpr = { UnaryOp? ~ Term }
 
-Term = { Int | "(" ~ Expr ~ ")" }
+Term = { Ident | Int | "(" ~ Expr ~ ")" }
 
 AddOp = { "+" | "-" }
 
@@ -27,3 +38,7 @@ WHITESPACE = _{ " " | "\t" | "\r" | "\n" }
 
 EOF = _{ EOI | ";" }
 
+//omfg i have no idea what this file is about 
+// i mean i do know what it does
+// but yk so weird
+// weird right?
