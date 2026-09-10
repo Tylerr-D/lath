@@ -139,11 +139,11 @@ pub fn parse(source: &str) -> std::result::Result<Vec<Node>, pest::error::Error<
     // it checks each and makes coverts it into ast
     for pair in pairs {
 
-        if pair.as_rule() == Rule::Smt {
+        if pair.as_rule() == Rule::Stmt {
             let inner = pair.into_inner().next().unwrap();
 
             match inner.as_rule(){
-                Rule::Let => astpush(build_binding(inner, true)),
+                Rule::Let => ast.push(build_binding(inner, true))
                 Rule::Assign => ast.push(build_binding(inner, false)),
                 Rule::Expr => ast.push(build_ast_from_expr(inner)),
 
@@ -156,7 +156,7 @@ pub fn parse(source: &str) -> std::result::Result<Vec<Node>, pest::error::Error<
     Ok(ast)
 }
 
-fn build_binding(pair: pest::iterators::Pair<Rule>, is_let: bool()) -> Node {
+fn build_binding(pair: pest::iterators::Pair<Rule>, is_let: bool) -> Node {
 
 
     // gonna change let later, maybe 
@@ -175,11 +175,11 @@ fn build_binding(pair: pest::iterators::Pair<Rule>, is_let: bool()) -> Node {
 }
 
 impl Eval {
-    pub fn new() -> Self {
-        Eval
+pub fn new() -> Self {
+        Eval { env: HashMap::new() }
     }
 
-    pub fn eval(&self, node: &Node) -> i32 {
+    pub fn eval(&mut self, node: &Node) -> i32 {
         match node {
             Node::Int(n) => *n,
             Node::UnaryExpr { op, child } => {
@@ -222,7 +222,7 @@ impl Eval {
                 v
             }
 
-            
+
                         }
     }
 }

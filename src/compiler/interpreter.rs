@@ -11,9 +11,9 @@ impl Compile for Interpreter {
 
     fn from_ast(ast: Vec<Node>) -> Self::Output {
         let mut ret = 0i32;
-        let evaluator = Eval::new();
+let mut evaluator = Eval::new();
         for node in ast {
-            ret += evaluator.eval(&node);
+            ret = evaluator.eval(&node);
         }
         Ok(ret)
     }
